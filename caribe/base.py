@@ -13,16 +13,61 @@ If you want to replace this with a Flask application run:
 and then choose `flask` as template.
 """
 
+import os
+import importlib.util
+from pathlib import Path
 
-class BaseClass:
-    def base_method(self) -> str:
+
+class Project:
+    def instance():
+        pyscript_url = getScriptUrl("project.py")
+        spec = importlib.util.spec_from_file_location("caribe.Project", pyscript_url)
+        instance = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(instance)
+        return instance
+
+
+
+g_project_url = []
+
+class Workspace:
+    def list(self) -> []:
         """
         Base method.
         """
         return "hello from BaseClass"
 
-    def __call__(self) -> str:
-        return self.base_method()
+    def instance():
+        pyscript_url = Workspace.getScriptUrl()
+        spec = importlib.util.spec_from_file_location("caribe.Workspace", pyscript_url)
+        instance = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(instance)
+        return instance
+
+
+    def makeProject(self):
+        pass
+
+    def getScriptUrl():
+        return getScriptUrl("workspace.py")
+
+    def include(name):
+        g_project_url.append(name)
+
+    #def __call__(self) -> str:
+    #    return self.base_method()
+
+
+
+def getScriptUrl(name: str):
+    pyscript_path = Path("./")
+    for i in range(10):
+        pyscript_url = pyscript_path / name
+        if os.path.exists(pyscript_url):
+            break
+        pyscript_path = pyscript_path / ".."
+    return pyscript_url
+
 
 
 def base_function() -> str:

@@ -1,6 +1,15 @@
 import argparse  # pragma: no cover
+import os
+import sys
+from pathlib import Path
 
-from . import BaseClass, base_function  # pragma: no cover
+from . import Project, Workspace  # pragma: no cover
+
+import importlib.util
+
+
+
+
 
 
 def main() -> None:  # pragma: no cover
@@ -19,17 +28,34 @@ def main() -> None:  # pragma: no cover
         * List all available tasks
         * Run an application (Flask, FastAPI, Django, etc.)
     """
+
+
+
+    project = Project.instance()
+
+    cmd = sys.argv[1]
+    if cmd == "build":
+        project.build()
+    else:
+        func_ptr = getattr(project, cmd)
+        func_ptr()
+
+    exit(0)
+
+
+
     parser = argparse.ArgumentParser(
         description="project_name.",
         epilog="Enjoy the project_name functionality!",
     )
     # This is required positional argument
-    parser.add_argument(
-        "name",
-        type=str,
-        help="The username",
-        default="author_name",
-    )
+    #parser.add_argument(
+    #    "name",
+    #    type=str,
+    #    help="The username",
+    #    default="author_name",
+    #)
+
     # This is optional named argument
     parser.add_argument(
         "-m",
@@ -46,15 +72,10 @@ def main() -> None:  # pragma: no cover
         help="Optionally adds verbosity",
     )
     args = parser.parse_args()
-    print(f"{args.message} {args.name}!")
+    #print(f"{args.message} {args.name}!")
     if args.verbose:
         print("Verbose mode is on.")
 
-    print("Executing main function")
-    base = BaseClass()
-    print(base.base_method())
-    print(base_function())
-    print("End of main function")
 
 
 if __name__ == "__main__":  # pragma: no cover

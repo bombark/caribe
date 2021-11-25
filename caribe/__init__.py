@@ -1,3 +1,3 @@
-from .base import BaseClass, base_function
+from .base import Project, Workspace
 
-__all__ = ["BaseClass", "base_function"]
+__all__ = ["Project", "Workspace"]
