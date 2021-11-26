@@ -26,6 +26,8 @@ class Project:
         spec.loader.exec_module(instance)
         return instance
 
+    def getRoot():
+        return getScriptPath("project.py")
 
 
 g_project_url = []
@@ -68,6 +70,14 @@ def getScriptUrl(name: str):
         pyscript_path = pyscript_path / ".."
     return pyscript_url
 
+def getScriptPath(name: str):
+    pyscript_path = Path("./")
+    for i in range(10):
+        pyscript_url = pyscript_path / name
+        if os.path.exists(pyscript_url):
+            break
+        pyscript_path = pyscript_path / ".."
+    return pyscript_path
 
 
 def base_function() -> str:

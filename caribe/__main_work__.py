@@ -1,5 +1,6 @@
 import argparse  # pragma: no cover
 import os
+import sys
 from pathlib import Path
 
 from . import Project, Workspace  # pragma: no cover
@@ -33,7 +34,18 @@ def main() -> None:  # pragma: no cover
 
 
     workspace = Workspace.instance()
-    workspace.build()
+
+    cmd = sys.argv[1]
+    if cmd == "build":
+        workspace.build()
+    else:
+        func_ptr = getattr(workspace, cmd)
+        if callable(func_ptr):
+            func_ptr(*sys.argv[2:])
+        else:
+            print(func_ptr)
+
+    exit(0)
 
 
 

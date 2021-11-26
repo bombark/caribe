@@ -38,7 +38,8 @@ def main() -> None:  # pragma: no cover
         project.build()
     else:
         func_ptr = getattr(project, cmd)
-        func_ptr()
+        print(func_ptr.__annotations__)
+        #func_ptr(*sys.argv[2:])
 
     exit(0)
 
